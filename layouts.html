@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DesignShelf | レイアウトを選ぶ</title>
-  <meta name="description" content="選んだ配色を反映した24種類の画面骨格からレイアウトを選ぶページ。">
+  <meta name="description" content="選んだ配色を反映した、実サイト風の疑似プレビュー24種類からレイアウトを選ぶページ。">
   <script>
     try { const saved = localStorage.getItem('designShelf.theme'); document.documentElement.dataset.theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (_) {}
     try { const prefs = JSON.parse(localStorage.getItem('designShelf.preferences.v1') || '{}'); document.documentElement.dataset.density = prefs.compact ? 'compact' : 'comfortable'; document.documentElement.dataset.reduceMotion = prefs.reduceMotion ? '1' : '0'; } catch (_) {}
@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/shell.css">
   <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/site-preview.css">
 </head>
 <body data-page="layouts">
   <header class="site-header">
@@ -33,8 +34,8 @@
     <section class="hero shell">
       <div class="hero-copy">
         <p class="kicker">STEP 2 / LAYOUT</p>
-        <h1>次に、画面の骨組みを選ぶ。</h1>
-        <p class="lead">24種類はすべて異なる骨格です。さらに「標準・余白広め・情報多め・スマホ重視」を切り替えられるため、同じカードの水増しではありません。</p>
+        <h1>実際のサイトに近い見た目で、レイアウトを選ぶ。</h1>
+        <p class="lead">24種類の骨格を、線だけの図ではなく疑似サイトとして表示します。STEP 1で選んだ配色もそのまま反映されるので、完成時の画面バランスを見ながら選べます。</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#layoutShelf">レイアウトを見る</a>
           <button class="button button-secondary" id="randomLayoutBtn" type="button">ランダム提案</button>
@@ -47,7 +48,7 @@
       <div>
         <p class="kicker">VARIANT</p>
         <h2 id="variantHeading">同じ骨格の密度を切り替える</h2>
-        <p>この切り替えは見た目と最終プロンプトの両方へ反映されます。</p>
+        <p>標準・余白広め・情報多め・スマホ重視で、疑似サイトの見え方自体も変化します。</p>
       </div>
       <div class="variant-options" id="variantOptions" role="radiogroup" aria-label="レイアウトのバリエーション"></div>
     </section>
@@ -83,8 +84,8 @@
       <div class="section-heading">
         <div>
           <p class="kicker">LAYOUT SHELF</p>
-          <h2 id="layoutShelfHeading">画面骨格 24種類</h2>
-          <p>カードの見本にはSTEP 1で選んだ配色を75 : 20 : 5の役割で反映しています。</p>
+          <h2 id="layoutShelfHeading">疑似サイトプレビュー 24種類</h2>
+          <p>題材や業種は固定せず、ナビ・見出し・カード・表示枠・ボタンなどの汎用パーツだけで実サイトらしく見せています。色はSTEP 1の75 : 20 : 5を反映します。</p>
         </div>
       </div>
       <div class="layout-grid" id="layoutGrid" aria-live="polite"></div>
