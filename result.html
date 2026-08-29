@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HTMLニトリ（仮） | 合成プロンプト</title>
+  <meta name="description" content="選んだ配色と画面構造を合成したAI用プロンプトを表示するページ。" />
+  <script>document.documentElement.dataset.theme = localStorage.getItem("htmlNitoriTheme") || "light";</script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="result">
+  <header class="site-header">
+    <nav class="nav" aria-label="メインナビゲーション">
+      <a class="logo" href="index.html" aria-label="HTMLニトリ ホーム">
+        <span class="logo-mark">HN</span>
+        <span>HTMLニトリ<span class="beta">仮</span></span>
+      </a>
+      <div class="nav-actions">
+        <a class="ghost-link" href="index.html">色を選び直す</a>
+        <a class="ghost-link" href="layouts.html">構造を選び直す</a>
+        <button class="ghost-btn theme-toggle" id="themeToggleBtn" type="button" aria-pressed="false">ダーク</button>
+        <a class="ghost-link" href="README.md">README</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero result-hero">
+      <div class="hero-copy">
+        <p class="eyebrow">step 3 / combined prompt</p>
+        <h1>配色と画面構造をまとめたプロンプト。</h1>
+        <p class="lead">選んだ配色と画面構造を合成して、AIにそのまま貼れる指示文を作ります。配色名や構造名からサイト内容を勝手に決めないようにしています。</p>
+        <div class="hero-actions">
+          <button class="primary-btn" id="copyCombinedPromptBtn" type="button">合成プロンプトをコピー</button>
+          <button class="secondary-btn" id="clearSelectionBtn" type="button">選択をリセット</button>
+        </div>
+      </div>
+      <aside class="hero-panel result-mini-panel">
+        <div class="mini-card">配色 + 画面構造</div>
+        <div class="mini-card">AIに貼るだけ</div>
+        <div class="mini-card">HTML/CSS/JS指定込み</div>
+      </aside>
+    </section>
+
+    <section class="howto" aria-labelledby="result-howto-title">
+      <h2 id="result-howto-title">進行状況</h2>
+      <div class="steps steps-3">
+        <article class="done"><strong>1</strong><span>配色を選択済み</span></article>
+        <article class="done"><strong>2</strong><span>画面構造を選択済み</span></article>
+        <article class="active"><strong>3</strong><span>プロンプト完成</span></article>
+      </div>
+    </section>
+
+    <section class="result-section" id="resultSection">
+      <div class="result-summary-grid">
+        <article class="summary-card" id="styleSummaryCard"></article>
+        <article class="summary-card" id="layoutSummaryCard"></article>
+      </div>
+      <section class="final-preview-section" aria-labelledby="final-preview-title">
+        <div class="section-head compact-section-head">
+          <p class="eyebrow">live preview</p>
+          <h2 id="final-preview-title">選んだ配色 × 画面構造の見本</h2>
+          <p class="section-lead">実際のサイト内容ではなく、色の比率とレイアウトの骨組みだけを確認するための見本です。</p>
+        </div>
+        <div id="finalPreview"></div>
+      </section>
+
+      <div class="site-brief-box featured-brief-box">
+        <div class="brief-head">
+          <div>
+            <p class="eyebrow">optional brief</p>
+            <label for="sitePurposeInput">作りたいサイトの内容</label>
+          </div>
+          <span>任意入力</span>
+        </div>
+        <textarea id="sitePurposeInput" placeholder="例：投資管理サイトを作りたい。CSVで記録を入れて、資産推移・メモ・ダウンロード導線を見やすくしたい。"></textarea>
+        <p>ここを書くと、配色と画面構造を保ったまま、あなたが作りたい内容を最優先したプロンプトになります。未入力でも使えます。</p>
+      </div>
+
+      <section class="prompt-options" aria-labelledby="prompt-options-title">
+        <div>
+          <p class="eyebrow">output setting</p>
+          <h2 id="prompt-options-title">AIへの出力条件</h2>
+          <p>作りたい形に合わせて、完成プロンプト内の出力条件を切り替えます。</p>
+        </div>
+        <div class="option-grid">
+          <label class="option-field">
+            <span>ファイル構成</span>
+            <select id="promptFormatSelect">
+              <option value="split">index.html / style.css / script.js に分ける</option>
+              <option value="single">1つのHTMLファイルにまとめる</option>
+              <option value="project">READMEと作業報告書つきの小プロジェクト形式</option>
+            </select>
+          </label>
+          <label class="check-option">
+            <input id="optionCssVars" type="checkbox" checked />
+            <span>CSS変数で3色を管理する</span>
+          </label>
+          <label class="check-option">
+            <input id="optionNoImages" type="checkbox" checked />
+            <span>画像なしでも成立する見た目にする</span>
+          </label>
+          <label class="check-option">
+            <input id="optionReadme" type="checkbox" />
+            <span>使い方メモも出してもらう</span>
+          </label>
+        </div>
+      </section>
+
+      <div class="prompt-area final-prompt-area">
+        <div class="prompt-head final-prompt-head">
+          <div>
+            <p class="eyebrow">final prompt</p>
+            <h2>AIに貼る完成プロンプト</h2>
+          </div>
+          <div class="prompt-actions">
+            <button class="primary-btn small" id="copyCombinedPromptBtn2" type="button">コピー</button>
+            <button class="secondary-btn small" id="downloadPromptBtn" type="button">txt保存</button>
+          </div>
+        </div>
+        <textarea id="combinedPromptText" readonly></textarea>
+      </div>
+    </section>
+
+    <section class="missing-selection" id="missingSelection" hidden>
+      <h2>まだ2つのテンプレが選ばれていません。</h2>
+      <p>先に配色テンプレを選び、そのあと画面構造テンプレを選んでください。</p>
+      <div class="hero-actions">
+        <a class="primary-btn" href="index.html">色から選ぶ</a>
+        <a class="secondary-btn" href="layouts.html">構造を見る</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/templates-data.js"></script>
+  <script src="js/layouts-data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

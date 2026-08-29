@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HTMLニトリ（仮） | 色を選んでレイアウトを組み合わせる</title>
+  <meta name="description" content="3色配色テンプレを選び、次にレイアウトテンプレを選ぶと、AIに貼れる合成プロンプトを作れるサイト。" />
+  <script>document.documentElement.dataset.theme = localStorage.getItem("htmlNitoriTheme") || "light";</script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="styles">
+  <header class="site-header">
+    <nav class="nav" aria-label="メインナビゲーション">
+      <a class="logo" href="index.html" aria-label="HTMLニトリ ホーム">
+        <span class="logo-mark">HN</span>
+        <span>HTMLニトリ<span class="beta">仮</span></span>
+      </a>
+      <div class="nav-actions">
+        <a class="ghost-link" href="layouts.html">レイアウト一覧</a>
+        <button class="ghost-btn" id="randomBtn" type="button">ランダム提案</button>
+        <button class="ghost-btn theme-toggle" id="themeToggleBtn" type="button" aria-pressed="false">ダーク</button>
+        <a class="ghost-link" href="README.md">README</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">step 1 / color style</p>
+        <h1>まず配色を選ぶ。</h1>
+        <p class="lead">ここではサイト内容ではなく、使いたい3色の配色だけを選びます。選んだ後、次のページでレイアウトを選ぶと、2つを合体したAI用プロンプトが出ます。</p>
+        <div class="hero-actions">
+          <a class="primary-btn" href="#templates">色テンプレを見る</a>
+          <button class="secondary-btn" id="copyStarterBtn" type="button">基本依頼文をコピー</button>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="サイト概要">
+        <div class="stat-card">
+          <span class="stat-number" id="totalCount">100</span>
+          <span class="stat-label">配色テンプレ</span>
+        </div>
+        <div class="mini-card">1. 色を選ぶ</div>
+        <div class="mini-card">2. レイアウトを選ぶ</div>
+        <div class="mini-card">3. 合成プロンプトをコピー</div>
+      </aside>
+    </section>
+
+    <section class="spotlight" id="dailySpotlight" aria-label="おすすめ配色"></section>
+
+    <section class="howto" aria-labelledby="howto-title">
+      <h2 id="howto-title">使い方</h2>
+      <div class="steps steps-3">
+        <article class="active"><strong>1</strong><span>配色を選ぶ</span></article>
+        <article><strong>2</strong><span>レイアウトを選ぶ</span></article>
+        <article><strong>3</strong><span>まとめたプロンプトをコピー</span></article>
+      </div>
+    </section>
+
+    <section class="controls" aria-label="検索と絞り込み">
+      <div class="search-box">
+        <label for="searchInput">色・雰囲気を検索</label>
+        <input id="searchInput" type="search" placeholder="例: 黒、金、淡色、ベージュ、ブルー、高級、ナチュラル" autocomplete="off" />
+      </div>
+      <div class="filter-row">
+        <div>
+          <p class="filter-title">色タイプ</p>
+          <div class="chips" id="categoryChips"></div>
+        </div>
+        <div>
+          <p class="filter-title">雰囲気</p>
+          <div class="chips" id="moodChips"></div>
+        </div>
+      </div>
+      <div class="result-bar">
+        <p><span id="resultCount">0</span>件表示中</p>
+        <div class="result-actions segmented-actions" role="tablist" aria-label="表示切り替え">
+          <button class="text-btn active" id="allColorsTab" type="button">すべて</button>
+          <button class="text-btn" id="favoriteOnlyBtn" type="button">お気に入り</button>
+          <button class="text-btn" id="resetBtn" type="button">リセット</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="compare-shelf" id="compareShelf" aria-labelledby="compare-title" hidden>
+      <div class="section-head compact-section-head">
+        <p class="eyebrow">compare</p>
+        <h2 id="compare-title">候補を比べる</h2>
+        <p class="section-lead">気になる配色を最大3件まで並べて、比率・雰囲気・カラーコードを見比べられます。</p>
+      </div>
+      <div class="compare-list" id="compareList"></div>
+      <div class="compare-actions">
+        <button class="secondary-btn small" id="clearCompareBtn" type="button">比較を空にする</button>
+      </div>
+    </section>
+
+    <section id="templates" class="template-section" aria-labelledby="templates-title">
+      <div class="section-head">
+        <p class="eyebrow">color shelf</p>
+        <h2 id="templates-title">3色配色テンプレ売り場</h2>
+        <p class="section-lead">ここで選ぶのはサイトの題材ではなく「3色の組み合わせ」です。レイアウトは次ページで別に選べます。</p>
+      </div>
+      <div class="grid" id="templateGrid" aria-live="polite"></div>
+      <p class="empty" id="emptyMessage" hidden>条件に合うテンプレがありません。</p>
+    </section>
+  </main>
+
+  <dialog class="modal" id="templateModal">
+    <div class="modal-inner">
+      <button class="close-btn" id="closeModalBtn" type="button" aria-label="閉じる">×</button>
+      <div class="modal-preview" id="modalPreview"></div>
+      <div class="modal-content">
+        <p class="modal-category" id="modalCategory"></p>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <div class="modal-tags" id="modalTags"></div>
+        <div class="detail-list">
+          <div>
+            <h3>配色の扱い</h3>
+            <p id="modalTarget"></p>
+          </div>
+          <div>
+            <h3>3色の役割</h3>
+            <ul id="modalSections"></ul>
+          </div>
+          <div>
+            <h3>注意点</h3>
+            <ul id="modalFeatures"></ul>
+          </div>
+        </div>
+        <div class="prompt-area">
+          <div class="prompt-head">
+            <h3>この配色だけのプロンプト</h3>
+            <div class="prompt-actions">
+              <button class="secondary-btn small" id="copyPromptBtn" type="button">コピー</button>
+              <button class="primary-btn small" id="chooseStyleBtn" type="button">この色でレイアウト選択へ</button>
+            </div>
+          </div>
+          <textarea id="promptText" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <aside class="selected-dock" id="selectedColorDock" aria-live="polite"></aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/templates-data.js"></script>
+  <script src="js/layouts-data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

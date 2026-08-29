@@ -1,0 +1,55 @@
+# GitHub Pages 公開手順
+
+このフォルダーは **GitHub Pages だけで動く静的Webサイト版** です。Electron、Node.js、起動.bat は使いません。
+
+## 1. GitHubへアップロード
+
+1. GitHubで新しいリポジトリを作成する。
+2. このフォルダーの中身を、リポジトリのルートへアップロードする。
+3. `index.html` がリポジトリ直下にある状態にする。
+
+正しい配置例:
+
+```txt
+リポジトリ/
+├─ index.html
+├─ layouts.html
+├─ result.html
+├─ css/
+├─ js/
+├─ data/
+├─ docs/
+├─ README.md
+├─ .gitignore
+└─ .nojekyll
+```
+
+## 2. GitHub Pagesを有効化
+
+1. GitHubリポジトリの `Settings` を開く。
+2. 左メニューの `Pages` を開く。
+3. `Build and deployment` の `Source` を `Deploy from a branch` にする。
+4. `Branch` を `main`、フォルダーを `/root` にする。
+5. `Save` を押す。
+
+数十秒〜数分後に、GitHub PagesのURLが表示されます。
+
+## 3. 注意点
+
+- APIキーは不要です。
+- 外部サーバーは不要です。
+- `data/templates.json` と `data/layouts.json` はGitHub Pages上でfetchされます。
+- ローカルで `index.html` を直接開いた場合は、`js/templates-data.js` と `js/layouts-data.js` のフォールバックデータで動きます。
+- データを追加した場合は、GitHub Pages用のJSONと、直開き用のJSフォールバックの両方を更新してください。
+
+## 4. GitHub Pagesで動かないもの
+
+この版ではElectron機能を削除しています。
+
+- `起動.bat`
+- `package.json`
+- `electron/main.cjs`
+- Setup.exe化
+- ローカルアプリ化
+
+これらはGitHub Pagesでは動きません。
