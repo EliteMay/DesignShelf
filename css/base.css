@@ -1,0 +1,19 @@
+:root {
+  color-scheme: light;
+  --bg:#f6f7f9; --surface:#fff; --surface-2:#eef1f5; --text:#17191d; --muted:#68707b;
+  --line:#dfe4ea; --brand:#2457d6; --brand-strong:#163f9f; --brand-soft:#e9efff; --danger:#b42318;
+  --shadow:0 12px 35px rgba(20,28,45,.08); --radius-sm:10px; --radius:16px; --radius-lg:24px; --shell:1240px;
+}
+:root[data-theme="dark"] {
+  color-scheme:dark; --bg:#111318; --surface:#191c22; --surface-2:#22262e; --text:#f2f4f7; --muted:#a6adb8;
+  --line:#303641; --brand:#88aaff; --brand-strong:#b3c6ff; --brand-soft:#202b49; --danger:#ff8a80;
+  --shadow:0 16px 40px rgba(0,0,0,.24);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;min-width:320px;background:var(--bg);color:var(--text);font-family:Inter,"Noto Sans JP","Yu Gothic UI","Yu Gothic",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65;text-rendering:optimizeLegibility;padding-left:env(safe-area-inset-left,0);padding-right:env(safe-area-inset-right,0)}
+button,input,textarea,select{font:inherit} button,a{-webkit-tap-highlight-color:transparent} a{color:inherit;text-decoration:none} img,svg{max-width:100%} button{color:inherit}
+h1,h2,h3,p{margin-top:0} h1,h2,h3{line-height:1.25;letter-spacing:-.025em} h1{font-size:clamp(2.15rem,5vw,4.6rem);margin-bottom:20px} h2{font-size:clamp(1.55rem,3vw,2.35rem);margin-bottom:10px} h3{font-size:1.05rem} p{color:var(--muted)}
+.shell{width:min(calc(100% - 40px),var(--shell));margin-inline:auto} main{padding-bottom:88px}.kicker{margin-bottom:8px;color:var(--brand);font-size:.78rem;font-weight:800;letter-spacing:.12em}.lead{font-size:clamp(1rem,1.8vw,1.15rem);max-width:760px}.muted{color:var(--muted);font-size:.82rem;font-weight:500}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 55%,transparent);outline-offset:2px}
+html[data-reduce-motion="1"]{scroll-behavior:auto} html[data-reduce-motion="1"] *,html[data-reduce-motion="1"] *::before,html[data-reduce-motion="1"] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media(max-width:720px){.shell{width:min(calc(100% - 24px),var(--shell))}main{padding-bottom:56px}}

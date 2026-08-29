@@ -1,117 +1,113 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HTMLニトリ（仮） | レイアウトテンプレを選ぶ</title>
-  <meta name="description" content="選んだ配色を反映しながら、画面構造だけを選ぶページ。" />
-  <script>document.documentElement.dataset.theme = localStorage.getItem("htmlNitoriTheme") || "light";</script>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DesignShelf | レイアウトを選ぶ</title>
+  <meta name="description" content="選んだ配色を反映した24種類の画面骨格からレイアウトを選ぶページ。">
+  <script>
+    try { const saved = localStorage.getItem('designShelf.theme'); document.documentElement.dataset.theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (_) {}
+    try { const prefs = JSON.parse(localStorage.getItem('designShelf.preferences.v1') || '{}'); document.documentElement.dataset.density = prefs.compact ? 'compact' : 'comfortable'; document.documentElement.dataset.reduceMotion = prefs.reduceMotion ? '1' : '0'; } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/shell.css">
+  <link rel="stylesheet" href="css/pages.css">
 </head>
 <body data-page="layouts">
   <header class="site-header">
-    <nav class="nav" aria-label="メインナビゲーション">
-      <a class="logo" href="index.html" aria-label="HTMLニトリ ホーム">
-        <span class="logo-mark">HN</span>
-        <span>HTMLニトリ<span class="beta">仮</span></span>
+    <nav class="nav shell" aria-label="メインナビゲーション">
+      <a class="brand" href="index.html" aria-label="DesignShelf ホーム">
+        <span class="brand-mark">DS</span>
+        <span>DesignShelf</span>
       </a>
       <div class="nav-actions">
-        <a class="ghost-link" href="index.html">色を選び直す</a>
-        <a class="ghost-link" href="result.html">結果を見る</a>
-        <button class="ghost-btn theme-toggle" id="themeToggleBtn" type="button" aria-pressed="false">ダーク</button>
-        <a class="ghost-link" href="README.md">README</a>
+        <a class="nav-link" href="index.html">配色を選び直す</a>
+        <a class="nav-link" href="result.html">結果</a>
+        <button class="button button-quiet" id="themeToggleBtn" type="button" aria-pressed="false">ダーク</button>
       </div>
     </nav>
   </header>
 
   <main>
-    <section class="hero choice-hero">
+    <section class="hero shell">
       <div class="hero-copy">
-        <p class="eyebrow">step 2 / layout template</p>
-        <h1>次に画面の骨組みを選ぶ。</h1>
-        <p class="lead">ここで選ぶのは題材ではなく、ヘッダー・カラム・カード・表・リストなどの並べ方だけです。前のページで選んだ配色を、各レイアウト見本に反映して表示します。</p>
+        <p class="kicker">STEP 2 / LAYOUT</p>
+        <h1>次に、画面の骨組みを選ぶ。</h1>
+        <p class="lead">24種類はすべて異なる骨格です。さらに「標準・余白広め・情報多め・スマホ重視」を切り替えられるため、同じカードの水増しではありません。</p>
         <div class="hero-actions">
-          <a class="primary-btn" href="#layouts">レイアウトを見る</a>
-          <button class="secondary-btn" id="randomLayoutBtn" type="button">ランダムレイアウト</button>
+          <a class="button button-primary" href="#layoutShelf">レイアウトを見る</a>
+          <button class="button button-secondary" id="randomLayoutBtn" type="button">ランダム提案</button>
         </div>
       </div>
-      <aside class="hero-panel selected-panel" id="selectedStylePanel" aria-label="選択中の色"></aside>
+      <aside class="hero-panel" id="selectedPalettePanel" aria-label="選択中の配色"></aside>
     </section>
 
-    <section class="howto" aria-labelledby="layout-howto-title">
-      <h2 id="layout-howto-title">進行状況</h2>
-      <div class="steps steps-3">
-        <article class="done"><strong>1</strong><span>色・雰囲気を選択済み</span></article>
-        <article class="active"><strong>2</strong><span>レイアウトを選ぶ</span></article>
-        <article><strong>3</strong><span>まとめたプロンプト</span></article>
+    <section class="shell variant-panel" aria-labelledby="variantHeading">
+      <div>
+        <p class="kicker">VARIANT</p>
+        <h2 id="variantHeading">同じ骨格の密度を切り替える</h2>
+        <p>この切り替えは見た目と最終プロンプトの両方へ反映されます。</p>
+      </div>
+      <div class="variant-options" id="variantOptions" role="radiogroup" aria-label="レイアウトのバリエーション"></div>
+    </section>
+
+    <section class="shell tool-panel" aria-label="レイアウトの検索と絞り込み">
+      <div class="search-row">
+        <label class="field grow" for="layoutSearchInput">
+          <span>構造を検索</span>
+          <input id="layoutSearchInput" type="search" placeholder="例: 左右、サイドバー、カード、表、タブ" autocomplete="off">
+        </label>
+      </div>
+      <div class="filter-block">
+        <p class="filter-label">構造タイプ</p>
+        <div class="chips" id="layoutTypeChips"></div>
+      </div>
+      <div class="tool-footer">
+        <p role="status" aria-live="polite"><strong id="layoutResultCount">0</strong>件表示 / 24骨格</p>
+        <button class="text-button" id="resetLayoutFiltersBtn" type="button">絞り込みをリセット</button>
       </div>
     </section>
 
-    <section class="controls" aria-label="レイアウト検索と絞り込み">
-      <div class="search-box">
-        <label for="layoutSearchInput">構造を検索</label>
-        <input id="layoutSearchInput" type="search" placeholder="例: 左右分割、カード、サイドバー、比較表、時系列" autocomplete="off" />
-      </div>
-      <div class="filter-row one-column">
+    <section class="shell recent-section" id="recentLayoutSection" hidden aria-labelledby="recentLayoutHeading">
+      <div class="section-heading compact">
         <div>
-          <p class="filter-title">構造タイプ</p>
-          <div class="chips" id="layoutTypeChips"></div>
+          <p class="kicker">RECENT</p>
+          <h2 id="recentLayoutHeading">最近選んだ骨格</h2>
         </div>
       </div>
-      <div class="result-bar">
-        <p><span id="layoutResultCount">0</span>件表示中</p>
-        <button class="text-btn" id="layoutResetBtn" type="button">リセット</button>
-      </div>
+      <div class="recent-strip" id="recentLayoutGrid"></div>
     </section>
 
-    <section id="layouts" class="template-section" aria-labelledby="layouts-title">
-      <div class="section-head">
-        <p class="eyebrow">layout shelf</p>
-        <h2 id="layouts-title">画面構造テンプレ売り場</h2>
-        <p class="section-lead">ここで選ぶのは「画面の並べ方」だけです。カード上部の見本には、前ページで選んだ配色を反映します。</p>
+    <section class="shell shelf-section" id="layoutShelf" aria-labelledby="layoutShelfHeading">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">LAYOUT SHELF</p>
+          <h2 id="layoutShelfHeading">画面骨格 24種類</h2>
+          <p>カードの見本にはSTEP 1で選んだ配色を75 : 20 : 5の役割で反映しています。</p>
+        </div>
       </div>
       <div class="layout-grid" id="layoutGrid" aria-live="polite"></div>
-      <p class="empty" id="layoutEmptyMessage" hidden>条件に合うレイアウトがありません。</p>
+      <div class="empty-state" id="layoutEmpty" hidden>
+        <h3>条件に合う骨格がありません。</h3>
+        <p>検索語か構造タイプを解除するか、24骨格からランダム提案を試してください。</p>
+        <div class="empty-actions">
+          <button class="button button-secondary" type="button" data-empty-action="reset">絞り込みを解除</button>
+          <button class="button button-primary" type="button" data-empty-action="random">24骨格からランダム</button>
+        </div>
+      </div>
     </section>
   </main>
 
-  <dialog class="modal" id="layoutModal">
-    <div class="modal-inner layout-modal-inner">
-      <button class="close-btn" id="closeLayoutModalBtn" type="button" aria-label="閉じる">×</button>
-      <div class="modal-preview" id="layoutModalPreview"></div>
-      <div class="modal-content">
-        <p class="modal-category" id="layoutModalType"></p>
-        <h2 id="layoutModalTitle"></h2>
-        <p id="layoutModalDescription"></p>
-        <div class="detail-list">
-          <div>
-            <h3>構造の使い方</h3>
-            <p id="layoutModalBestFor"></p>
-          </div>
-          <div>
-            <h3>構成</h3>
-            <ul id="layoutModalStructure"></ul>
-          </div>
-          <div>
-            <h3>特徴</h3>
-            <ul id="layoutModalFeatures"></ul>
-          </div>
-        </div>
-        <div class="prompt-area compact-prompt">
-          <div class="prompt-head">
-            <h3>この構造指示</h3>
-            <button class="primary-btn small" id="chooseLayoutBtn" type="button">この構造でプロンプト作成</button>
-          </div>
-          <textarea id="layoutPromptText" readonly></textarea>
-        </div>
-      </div>
+  <dialog class="dialog" id="layoutDialog">
+    <div class="dialog-card dialog-card-wide">
+      <button class="dialog-close" id="closeLayoutDialogBtn" type="button" aria-label="閉じる">×</button>
+      <div id="layoutDialogBody"></div>
     </div>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <script src="js/templates-data.js"></script>
-  <script src="js/layouts-data.js"></script>
-  <script src="js/main.js"></script>
+  <script type="module" src="js/shell.js"></script>
+  <script type="module" src="js/layouts.js"></script>
 </body>
 </html>

@@ -1,0 +1,14 @@
+{
+  "files": [
+    "data/palettes/beige.json",
+    "data/palettes/blue.json",
+    "data/palettes/green.json",
+    "data/palettes/pink.json",
+    "data/palettes/purple.json",
+    "data/palettes/dark.json",
+    "data/palettes/mono.json",
+    "data/palettes/warm.json",
+    "data/palettes/japanese.json",
+    "data/palettes/pop.json"
+  ]
+}
