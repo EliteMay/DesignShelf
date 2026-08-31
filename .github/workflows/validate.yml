@@ -1,9 +1,22 @@
 name: Validate DesignShelf
+
 on:
   push:
   pull_request:
+
+permissions:
+  contents: read
+
 jobs:
-  validate:
+  baseline:
+    uses: EliteMay/web-project-guide/.github/workflows/reusable-web-baseline.yml@c526f3fc37c89972480b69b249ace017437f6813
+    with:
+      node-version: '22'
+      syntax-paths: 'js scripts'
+      check-json: true
+
+  project:
+    needs: baseline
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -12,10 +25,3 @@ jobs:
           node-version: 22
       - name: Validate data and local references
         run: node scripts/validate-data.mjs
-      - name: Check JavaScript syntax
-        run: |
-          node --check js/shared.js
-          node --check js/shell.js
-          node --check js/colors.js
-          node --check js/layouts.js
-          node --check js/result.js
