@@ -1,6 +1,13 @@
 # CHANGELOG
 
-## Unreleased - 2026-08-29
+## Unreleased - 2026-08-31
+
+### GitHub Actions
+
+- `web-project-guide` v1.10.0のReusable Web BaselineをPilot導入。
+- Checkout / Node.js 22 / JavaScript・MJS構文確認 / JSON Parseの共通BaselineをGuide側へ委譲。
+- Reusable Workflowは`web-project-guide`のMerge Commit SHA `c526f3fc37c89972480b69b249ace017437f6813`へ固定し、中央`main`変更の即時伝播を避ける。
+- DesignShelf固有の`node scripts/validate-data.mjs`はProject側Workflowへ維持。
 
 ### 疑似サイトプレビュー
 
